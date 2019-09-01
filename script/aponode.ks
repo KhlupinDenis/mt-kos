@@ -1,5 +1,7 @@
 function aponode{
     parameter altm.
+set rb to body:radius.
+set mu to body:mu.
 // create apoapsis maneuver node
 print "T+" + round(missiontime) + " Apoapsis maneuver, orbiting " + body:name.
 print "T+" + round(missiontime) + " Apoapsis: " + round(apoapsis/1000) + "km".
