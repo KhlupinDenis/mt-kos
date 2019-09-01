@@ -1,4 +1,5 @@
 // execute maneuver node
+function exenode{
 set nd to nextnode.
 print "T+" + round(missiontime) + " Node apoapsis: " + round(nd:orbit:apoapsis/1000,2) + "km, periapsis: " + round(nd:orbit:periapsis/1000,2) + "km".
 print "T+" + round(missiontime) + " Node in: " + round(nd:eta) + ", DeltaV: " + round(nd:deltav:mag).
@@ -50,3 +51,4 @@ print "T+" + round(missiontime) + " Apoapsis: " + round(apoapsis/1000,2) + "km, 
 print "T+" + round(missiontime) + " Fuel after burn: " + round(stage:liquidfuel).
 wait 1.
 remove nd.
+}

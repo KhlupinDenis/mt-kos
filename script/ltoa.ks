@@ -1,4 +1,19 @@
 // launch to orbit (w/ atmosphere)
+require("mt","aponode.ks").
+require("mt","exenode.ks").
+
+function startnextstage {
+  until ship:availablethrust > 0 {
+     wait 0.5.
+    stage.
+  }
+}
+
+
+function LTOA{
+    parameter lorb.
+
+
 if body:name = "Kerbin" {
     // trajectory parameters
     set gt0 to 1000.
@@ -7,8 +22,12 @@ if body:name = "Kerbin" {
     set pitch1 to 90.
     // velocity parameters
     set maxq to 7000.
+    set sh to 5000.
+    set ad0 to body:atm:ALTITUDEPRESSURE(0).
 }
+set euler to  Constant:E.
 print "Launch to orbit: " + time:calendar + ", " + time:clock.
+set ha to body:atm:height.
 set tset to 1.
 lock throttle to tset. 
 lock steering to up + R(0, 0, -180).
@@ -27,6 +46,7 @@ stage.
 set pitch to 0.
 until altitude > ha or apoapsis > lorb {
     set ar to alt:radar.
+    startnextstage().
     // control attitude
     if ar > gt0 and ar < gt1 {
         set arr to (ar - gt0) / (gt1 - gt0).
@@ -64,6 +84,7 @@ if altitude < ha {
     print "T+" + round(missiontime) + " Waiting to leave atmosphere".
     lock steering to up + R(0, pitch, 0).       // roll for orbital orientation
     // thrust to compensate atmospheric drag losses
+    startnextstage().
     until altitude > ha {
         // calculate target velocity
         if apoapsis >= lorb { set tset to 0. }
@@ -72,6 +93,7 @@ if altitude < ha {
         print "apoapis: " + round(apoapsis/1000,2) at (0,35).
         print "periapis: " + round(periapsis/1000,2) at (20,35).
         wait 0.1.
+        startnextstage().
     }
 }
 print "                                        " at (0,33).
@@ -79,5 +101,6 @@ print "                                        " at (0,34).
 print "                                        " at (0,35).
 lock throttle to 0.
 // aponode works only in vacuum as it uses ship v to calc apoapsis velocity
-run aponode(lorb).
+aponode(lorb).
 run exenode.
+}

@@ -1,4 +1,5 @@
-declare parameter altm.
+function aponode{
+    parameter altm.
 // create apoapsis maneuver node
 print "T+" + round(missiontime) + " Apoapsis maneuver, orbiting " + body:name.
 print "T+" + round(missiontime) + " Apoapsis: " + round(apoapsis/1000) + "km".
@@ -19,3 +20,4 @@ print "T+" + round(missiontime) + " Apoapsis burn: " + round(va) + ", dv:" + rou
 set nd to node(time:seconds + eta:apoapsis, 0, 0, deltav).
 add nd.
 print "T+" + round(missiontime) + " Node created.".
+}
