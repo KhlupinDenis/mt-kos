@@ -19,7 +19,8 @@ set v2 to sqrt( vom^2 + (mu * (2/r2 - 2/r + 1/a - 1/a2 ) ) ).
 // setup node 
 set deltav to v2 - va.
 print "T+" + round(missiontime) + " Apoapsis burn: " + round(va) + ", dv:" + round(deltav) + " -> " + round(v2) + "m/s".
-set nd to node(time:seconds + eta:apoapsis, 0, 0, deltav).
-add nd.
+local nd to NODE(time:seconds + eta:apoapsis, 0, 0, deltav).
+ADD nd.
+lock throttle to 0.
 print "T+" + round(missiontime) + " Node created.".
 }

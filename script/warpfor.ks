@@ -1,4 +1,6 @@
-declare parameter dt.
+
+function warpfor{
+    parameter dt.
 // warp    (0:1) (1:5) (2:10) (3:50) (4:100) (5:1000) (6:10000) (7:100000)
 // min alt        atmo   atmo   atmo    120k     240k      480k       600k
 // time:seconds also works before takeoff! Unlike missiontime.
@@ -28,4 +30,5 @@ until time:seconds >= t1 {
         set oldwarp to warp.
     }
     wait 0.1.
+}
 }

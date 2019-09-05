@@ -6,22 +6,24 @@ print "T+" + round(missiontime) + " Node in: " + round(nd:eta) + ", DeltaV: " + 
 set maxa to maxthrust/mass.
 set dob to nd:deltav:mag/maxa.     // incorrect: should use tsiolkovsky formula
 print "T+" + round(missiontime) + " Max acc: " + round(maxa) + "m/s^2, Burn duration: " + round(dob) + "s".
-run warpfor(nd:eta - dob/2 - 60).
+warpfor(nd:eta - dob/2 - 60).
 // turn does not work during warp - so do now
 print "T+" + round(missiontime) + " Turning ship to burn direction.".
 sas off.
 rcs off.
 // workaround for steering:pitch not working with node assigned
-set np to R(0,0,0) * nd:deltav.
+//set np to R(0,0,0) * nd:deltav.
+set np to nd:deltav.
 lock steering to np.
 set npd to np:direction.
 wait until abs(npd:pitch - facing:pitch) < 0.1 and abs(npd:yaw - facing:yaw) < 0.1.
-run warpfor(nd:eta - dob/2).
+warpfor(nd:eta - dob/2).
 print "T+" + round(missiontime) + " Orbital burn start " + round(nd:eta) + "s before apoapsis.".
 set tset to 0.
 lock throttle to tset.
 // keep ship oriented to burn direction even with small dv where node:prograde wanders off 
-set np to R(0,0,0) * nd:deltav.
+//set np to R(0,0,0) * nd:deltav.
+set np to nd:deltav.
 lock steering to np.
 set done to False.
 set once to True.

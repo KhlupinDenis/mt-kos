@@ -1,6 +1,8 @@
 // launch to orbit (w/ atmosphere)
 require("mt","aponode.ks").
+require("mt","warpfor.ks").
 require("mt","exenode.ks").
+
 
 function startnextstage {
   until ship:availablethrust > 0 {
@@ -102,5 +104,7 @@ print "                                        " at (0,35).
 lock throttle to 0.
 // aponode works only in vacuum as it uses ship v to calc apoapsis velocity
 aponode(lorb).
-run exenode.
+lock throttle to 0.
+print " maneuvr node completed".
+exenode().
 }
