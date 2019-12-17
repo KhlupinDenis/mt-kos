@@ -1,4 +1,45 @@
 // launch to orbit in vacuum (no atmosphere)
+require("mt","aponode.ks").
+require("mt","warpfor.ks").
+require("mt","exenode.ks").
+
+
+function startnextstage {
+  until ship:availablethrust > 0 {
+     wait 0.5.
+    stage.
+  }
+}
+
+
+function LTOV{
+    parameter lorb.
+
+set b to body:name.
+set mu to 0.
+if b = "Mun" {
+    set mu to 6.5138398*10^10.
+    set rb to 200000.
+    set soi to 2429559.
+    set ad0 to 0.
+    set lorb to 14000. 
+}
+if b = "Minmus" {
+    set mu to 1.7658000*10^9.
+    set rb to 60000.
+    set soi to 2247428.
+    set ad0 to 0.
+    set lorb to 10000. 
+}
+if mu = 0 {
+    print "T+" + round(missiontime) + " WARNING: no body properties for " + b + "!".
+}
+if mu > 0 {
+    print "T+" + round(missiontime) + " Loaded body properties for " + b.
+}
+set euler to 2.718281828.
+set pi to 3.1415926535.
+
 set ov to sqrt(mu/rb).           // orbital velocity for circular orbit
 print "Orbit v: " + round(ov) + " for low " + body:name + " orbit in " + round(lorb/1000) + "km".
 print "T+" + round(missiontime) + " All systems GO!".
@@ -49,3 +90,4 @@ wait until abs(sin(np:pitch) - sin(facing:pitch)) < 0.02 and abs(sin(np:yaw) - s
 wait 1.                 // BUG: without this wait aponode calculations are incorrect!
 run aponode(apoapsis).
 run exenode.
+}

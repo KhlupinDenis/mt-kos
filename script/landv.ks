@@ -1,12 +1,14 @@
-declare parameter ecoh.
+function landv{
+    parameter ecoh.
+    parameter lorb.
 // ecoh: engine cut-off height
 // start descent at periapsis
 print "T+" + round(missiontime) + " De-orbit burn starts in " + round(eta:periapsis) + "s".
 print "T+" + round(missiontime) + " Setting up ship for maneuver.".
-run warpfor(eta:periapsis - 60).
+warpfor(eta:periapsis - 60).
 lock steering to retrograde.
 wait until abs(retrograde:pitch - facing:pitch) < 0.1 and abs(retrograde:yaw - facing:yaw) < 0.1.
-run warpfor(eta:periapsis).
+warpfor(eta:periapsis).
 set tset to 0.
 lock throttle to tset.
 set ga to mu/(rb + periapsis)^2.
@@ -23,6 +25,7 @@ until (abs(altitude-alt:radar) > 1 or (abs(altitude-alt:radar) < 1 and alt:radar
     if vom < v0 { set tset to 0. }
     print "velocity:orbit: " + round(vom) + "  " at (0,35).
     wait 0.01.
+    startnextstage().
 }
 print "T+" + round(missiontime) + " Radar active, ar: " + round(alt:radar) + ", alt: " + round(altitude).
 // emulate retrograde:surface
@@ -43,10 +46,11 @@ until alt:radar < alt0 {
     print "alt:radar: " + round(alt:radar) + "  " at (0,33).
     print "vt: " + round(vt, 1) + "  " at (20,33).
     print "vert: " + round(verticalspeed,1) + "  " at (0,34).
-    print "vsfc: " + round(surfacespeed,1) + "  " at (20,34).
+    print "vsfc: " + round(GROUNDSPEED,1) + "  " at (20,34).
     print "vsm: " + round(velocity:surface:mag,1) + "  " at (0,35).
     print "(x,y,z): " + round(velocity:surface:x,1) + "," + round(velocity:surface:y,1) + "," + round(velocity:surface:z,1) + "  " at (20,35).
     wait 0.01.
+    startnextstage().
 }
 print "T+" + round(missiontime) + " High gate, killing surface speed".
 print "T+" + round(missiontime) + " Gear down".
@@ -56,19 +60,20 @@ set alt0 to 10.
 set dalt to alt1 - alt0.
 set vstart to -verticalspeed.
 set vend to 0.
-when surfacespeed < 0.3 and alt:radar < 15 then {
+when GROUNDSPEED < 0.3 and alt:radar < 15 then {
     print "T+" + round(missiontime) + " Low gate, descend for touchdown".
     set alt1 to alt:radar.
     set alt0 to ecoh * 0.6.
     set dalt to alt1 - alt0.
     set vstart to 3.
     set vend to 0.1.
+    startnextstage().
 }
 set ot to missiontime.
 until alt:radar < ecoh * 1.1 {
     // calculate burn vector
     set vup to -1 * body:position:normalized.
-    set f to min(surfacespeed, 3).
+    set f to min(GROUNDSPEED, 3).
     set vbrake to vup - (f/3 * velocity:surface:normalized).
     lock steering to vbrake:direction + R(0,0,90).
     // calculate gravitation neutral throttle setting (hover throttle)
@@ -90,12 +95,13 @@ until alt:radar < ecoh * 1.1 {
         print "alt:radar: " + round(alt:radar) + "  " at (0,33).
         print "vt: " + round(vt, 1) + "  " at (20,33).
         print "vert: " + round(verticalspeed,1) + "  " at (0,34).
-        print "vsfc: " + round(surfacespeed,1) + "  " at (20,34).
+        print "vsfc: " + round(GROUNDSPEED,1) + "  " at (20,34).
         print "vsm: " + round(velocity:surface:mag,1) + "  " at (0,35).
         print "(x,y,z): " + round(velocity:surface:x,1) + "," + round(velocity:surface:y,1) + "," + round(velocity:surface:z,1) + "  " at (20,35).
         set ot to missiontime + 0.5.
     }
     wait 0.01.
+    startnextstage().
 }
 set tset to 0.
 lock steering to up + R(0,0,90).
@@ -107,6 +113,8 @@ until settled {
     if abs(old:pitch-facing:pitch) < 0.05 and abs(old:yaw-facing:yaw) < 0.05 and abs(old:roll-facing:roll) < 0.05 {
         set settled to 1.
     }
+    startnextstage().
 }
 print "T+" + round(missiontime) + " This is " + body:name + " base, " + ship:name + " has landed.".
 print "T+" + round(missiontime) + " Fuel after landing: " + round(stage:liquidfuel).
+}
