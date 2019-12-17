@@ -1,4 +1,5 @@
-declare parameter refbody, dist.
+function warpdist{
+    parameter refbody, dist.
 // warp until crossing distance 
 // warp    (0:1) (1:5) (2:10) (3:50) (4:100) (5:1000) (6:10000) (7:100000)
 // min alt        atmo   atmo   atmo    120k     240k      480k       600k
@@ -7,14 +8,14 @@ print "T+" + round(missiontime) + " Wait start: " + time:calendar + ", " + time:
 set done to 0.
 set dist0 to refbody:position:mag.
 if dist0 > dist {
-    set dir to -1.
+    //set dir to -1.
     set f to 5.
     when refbody:position:mag < dist then {
         print "T+" + round(missiontime) + " Closer than " + round(dist/1000) + "km".
         set done to 1.
     }
 } else {
-    set dir to +1.
+    //set dir to +1.
     set f to 1.
     when refbody:position:mag > dist then {
         print "T+" + round(missiontime) + " Farther than " + round(dist/1000) + "km".
@@ -69,3 +70,4 @@ until done {
 set warp to 0.
 // set dt to time:seconds - t0.
 print "T+" + round(missiontime) + " Wait end: " + time:calendar + ", " + time:clock.
+}

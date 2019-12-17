@@ -1,10 +1,12 @@
-declare parameter altm.
+function perinode{
+    parameter altm.
 // create periapsis maneuver node
 print "T+" + round(missiontime) + " Periapsis maneuver, orbiting " + body:name.
 print "T+" + round(missiontime) + " Apoapsis: " + round(apoapsis/1000) + "km -> " + round(altm/1000) + "km".
 print "T+" + round(missiontime) + " Periapsis: " + round(periapsis/1000) + "km".
 // constants: mu, rb
-run bodyprops.
+set rb to body:radius.
+set mu to body:mu.
 // present orbit properties
 set vom to velocity:orbit:mag.  // actual velocity
 set r to rb + altitude.         // actual distance to body
@@ -21,4 +23,4 @@ print "T+" + round(missiontime) + " Periapsis burn: " + round(va) + ", dv:" + ro
 set nd to node(time:seconds + eta:periapsis, 0, 0, deltav).
 add nd.
 print "T+" + round(missiontime) + " Node created.".
-
+}

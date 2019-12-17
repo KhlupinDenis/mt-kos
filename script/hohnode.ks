@@ -1,9 +1,13 @@
-declare parameter tgtbody.
+require("mt","soi.ks").
+function hohnode{
+    parameter tgtbody.
 // setup a Hohmann transfer orbit
 // prerequisite: ship in circular orbit
 set done to False.
+set pi to Constant:PI.
 until done {
     // move origin to central body (i.e. Kerbin)
+    
     set ps to V(0,0,0) - body:position.
     set pt to tgtbody:position - body:position.
     // Hohmann transfer orbit period
@@ -11,8 +15,8 @@ until done {
     set vom to velocity:orbit:mag.          // actual velocity
     set r to rb + altitude.                 // actual distance to body
     set va to sqrt( vom^2 - 2*mu*(1/ra - 1/r) ). // average velocity 
-    run soi(tgtbody).
-    set apoh to pt:mag - soi/2.
+    set soir to soi(tgtbody).
+    set apoh to pt:mag - soir/2.
     set smah to (ra + apoh)/2.
     set oph to 2 * pi * sqrt(smah^3/mu).
     print "T+" + round(missiontime) + " Hohmann apoapsis: " + round(apoh/1000) + "km, transfer time: " + round(oph/120) + "min".
@@ -53,7 +57,7 @@ until done {
         set done to True.
     } else {
         print "T+" + round(missiontime) + " Trajectory intercepts " + encounter:body:name + ", wait for one orbit.".
-        run warpfor(ops).
+        warpfor(ops).
         remove nd.
         // recalculation of maneuver angle required (Minmus has moved to new location)
     }
@@ -65,4 +69,5 @@ if encounter:body:name = tgtbody:name {
     print "T+" + round(missiontime) + " WARNING! No encounter found.".
     remove nd.
 }
-    
+
+}

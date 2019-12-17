@@ -18,8 +18,8 @@ function LTOA{
 
 if body:name = "Kerbin" {
     // trajectory parameters
-    set gt0 to 1000.
-    set gt1 to 50000.
+    set gt0 to 6500.
+    set gt1 to 60000.
     set pitch0 to 0.
     set pitch1 to 90.
     // velocity parameters

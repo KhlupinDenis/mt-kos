@@ -16,7 +16,10 @@ rcs off.
 set np to nd:deltav.
 lock steering to np.
 set npd to np:direction.
-wait until abs(npd:pitch - facing:pitch) < 0.1 and abs(npd:yaw - facing:yaw) < 0.1.
+until abs(npd:pitch - facing:pitch) < 0.1 and abs(npd:yaw - facing:yaw) < 0.1{
+    print "pitch "+ round(npd:pitch,2)  + "  "+ round(facing:pitch,2)+" abs "+round(abs(npd:pitch - facing:pitch),2) at (20,33).
+    print "yaw "  + round(npd:yaw,2)+"  "+round(facing:yaw,2)+" abs "+round(abs(npd:yaw - facing:yaw),2) at (20,34).
+}.
 warpfor(nd:eta - dob/2).
 print "T+" + round(missiontime) + " Orbital burn start " + round(nd:eta) + "s before apoapsis.".
 set tset to 0.
@@ -29,6 +32,7 @@ set done to False.
 set once to True.
 set dv0 to nd:deltav.
 until done {
+    startnextstage().
     set maxa to maxthrust/mass.
     set tset to min(nd:deltav:mag/maxa, 1).
     if once and tset < 1 {
